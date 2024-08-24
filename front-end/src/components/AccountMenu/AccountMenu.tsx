@@ -26,7 +26,6 @@ export default function AccountMenu() {
     const dispatch = useDispatch();
     const user = useSelector((state: any) => state.login.user)
 
-    // console.log(user);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -63,7 +62,6 @@ export default function AccountMenu() {
         }
     }, []);
 
-    // console.log("user by loacl", localStorage.getItem('user'));
 
     return (
         <React.Fragment>

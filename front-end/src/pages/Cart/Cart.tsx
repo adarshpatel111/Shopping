@@ -59,18 +59,17 @@ const Cart: React.FC = () => {
     const userinfo = useSelector((state: any) => state.login.user);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL; // Ensure this is correctly set in .env
-    const stripePromise = loadStripe("pk_test_51PokBY1vdhrlHy8wjy74nM82BdpcbnpoaPbVX9MFRMvMZcxMqMFZ0vXJPKhRbrhTlX45UyDD5QAwJG7sRRV3Id9v00qigbupkc");
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
     const handlePayment = async () => {
         try {
             const stripe = await stripePromise;
+
             const body = {
                 customer: userinfo,
                 products: items,
                 total: cartTotal,
             };
-
-            console.log("Request body:", body);
 
             const response = await fetch(`${backendUrl}/create-checkout-session`, {
                 method: 'POST',
@@ -79,14 +78,21 @@ const Cart: React.FC = () => {
                 },
                 body: JSON.stringify(body),
             });
-            const session = await response.json();
-
-            stripe?.redirectToCheckout({ sessionId: session.id });
-            
-
-
+            console.log("mt body=>", response)
             if (!response.ok) {
                 throw new Error('Network response was not ok');
+            }
+
+            const session = await response.json();
+            // Ensure that `sessionId` is returned and valid
+            if (session.id) {
+                const result = await stripe.redirectToCheckout({ sessionId: session.id });
+                if (result.error) {
+                    console.error('Error redirecting to Checkout:', result.error.message);
+                    toast.error('Failed to redirect to checkout.');
+                }
+            } else {
+                throw new Error('Invalid session ID received');
             }
 
         } catch (error) {
@@ -94,6 +100,7 @@ const Cart: React.FC = () => {
             toast.error('Payment failed. Please try again.');
         }
     };
+
 
     const handleDeleteClick = (id: number) => {
         setItemToDelete(id);

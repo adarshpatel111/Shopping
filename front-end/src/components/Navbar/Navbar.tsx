@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux';
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const isLogin = useSelector((state: any) => state.login.token)
-    // console.log("islogin", isLogin);
 
     // Get cart data
     const { totalItems } = useCart(); // Use the totalItems from react-use-cart
