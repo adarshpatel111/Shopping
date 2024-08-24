@@ -21,7 +21,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "react-use-cart";
 import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { useSelector } from "react-redux";
 
 const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [convertedAmount, setConvertedAmount] = React.useState(amount);
@@ -48,10 +50,50 @@ const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR
     return convertedAmount.toFixed(2);
 };
 
+// Proceed to Pay
 const Cart: React.FC = () => {
     const { items, removeItem, updateItemQuantity, emptyCart, cartTotal } = useCart();
     const [open, setOpen] = React.useState(false);
     const [itemToDelete, setItemToDelete] = React.useState<number | null>(null);
+    const navigate = useNavigate();
+    const userinfo = useSelector((state: any) => state.login.user);
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL; // Ensure this is correctly set in .env
+    const stripePromise = loadStripe("pk_test_51PokBY1vdhrlHy8wjy74nM82BdpcbnpoaPbVX9MFRMvMZcxMqMFZ0vXJPKhRbrhTlX45UyDD5QAwJG7sRRV3Id9v00qigbupkc");
+
+    const handlePayment = async () => {
+        try {
+            const stripe = await stripePromise;
+            const body = {
+                customer: userinfo,
+                products: items,
+                total: cartTotal,
+            };
+
+            console.log("Request body:", body);
+
+            const response = await fetch(`${backendUrl}/create-checkout-session`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            });
+            const session = await response.json();
+
+            stripe?.redirectToCheckout({ sessionId: session.id });
+            
+
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+        } catch (error) {
+            console.error('Error during payment:', error);
+            toast.error('Payment failed. Please try again.');
+        }
+    };
 
     const handleDeleteClick = (id: number) => {
         setItemToDelete(id);
@@ -115,10 +157,14 @@ const Cart: React.FC = () => {
                                     {items.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell>
-                                                <Link to={`/products/${item.id}`}><img src={item.image} alt={item.title} style={{ width: 50, height: 50 }} /></Link>
+                                                <Link to={`/products/${item.id}`}>
+                                                    <img src={item.image} alt={item.title} style={{ width: 50, height: 50 }} />
+                                                </Link>
                                             </TableCell>
                                             <TableCell>
-                                                <Link style={{ textDecoration: "none", color: rootColors.text }} to={`/products/${item.id}`}>{item.title}</Link>
+                                                <Link style={{ textDecoration: "none", color: rootColors.text }} to={`/products/${item.id}`}>
+                                                    {item.title}
+                                                </Link>
                                             </TableCell>
                                             <TableCell>₹ <CurrencyConverter amount={item.price * item.quantity} /></TableCell>
                                             <TableCell>
@@ -130,7 +176,6 @@ const Cart: React.FC = () => {
                                                     +
                                                 </IconButton>
                                             </TableCell>
-
                                             <TableCell>
                                                 <IconButton onClick={() => handleDeleteClick(item.id)} aria-label="delete">
                                                     <DeleteIcon />
@@ -182,7 +227,7 @@ const Cart: React.FC = () => {
                     }}
                 >
                     <Button variant="contained" onClick={() => window.location.href = "/"}>Continue Shopping</Button>
-                    <Button variant="contained" color="primary" onClick={() => window.alert('Proceed to Checkout')}>
+                    <Button variant="contained" color="primary" onClick={handlePayment}>
                         Proceed to Checkout
                     </Button>
                 </Stack>

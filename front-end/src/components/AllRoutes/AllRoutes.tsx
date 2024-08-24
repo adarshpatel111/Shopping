@@ -10,8 +10,11 @@ import SignIn from "../../pages/SignIn/SignIn";
 import SignUp from "../../pages/SignUp/SignUp";
 import ScrollToTopOnRouteChange from "../ScrollToTopOnRouteChange/ScrollToTopOnRouteChange";
 import MyAccount from "../MyAccount/MyAccount";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Orders from "../../pages/Orders/Orders";
+import Payment from "../../pages/Payment/Payment";
+import PaymentCancel from "../PaymentCancel/PaymentCancel";
+import PaymentSuccess from "../PaymentSuccess/PaymentSuccess";
 
 
 const AllRoutes = () => {
@@ -31,11 +34,18 @@ const AllRoutes = () => {
         <Route path="/myaccount" element={isLogin ? <MyAccount /> : <Navigate to="/" />} />
         <Route path="/orders" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
         <Route path="/orders/:id" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
+        <Route path="/create-checkout-session" element={<Payment />} />
         <Route path="/login" element={
           isLogin ? <Navigate to="/" /> : <SignIn />
         } />
         <Route path="/signup" element={
           isLogin ? <Navigate to="/" /> : <SignUp />
+        } />
+        <Route path="/payment-cancelled" element={
+          isLogin ? <PaymentCancel /> : <Navigate to="/" />
+        } />
+        <Route path="/payment-success" element={
+          isLogin ? <PaymentSuccess /> : <Navigate to="/" />
         } />
         <Route path="*" element={<Error404 />} />
       </Routes>
