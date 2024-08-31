@@ -64,6 +64,40 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 0
+    },
+    orderStatus: {
+        type: String,
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+        default: 'Pending'
+    },
+    orderDate: {
+        type: Date,
+        default: Date.now
+    },
+    deliveryDate: {
+        type: Date
+    },
+    shippingAddress: {
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        postalCode: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
     }
 });
 
