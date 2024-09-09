@@ -25,9 +25,6 @@ export const getPaymentDetails = async (req, res) => {
             return res.status(400).json({ error: `Currency ${targetCurrency} not supported` });
         }
 
-        // res.json({ convertedPrice: convertedPrice.toFixed(2) });
-        // Create line items from the products
-        // const convertedPrice = products.price * rate;
         const lineItems = products.map((product) => {
             const convertedPrice = Math.round(product.price * rate * 100); // Convert to cents
             return {
@@ -52,6 +49,7 @@ export const getPaymentDetails = async (req, res) => {
             cancel_url: `${process.env.FRONT_URL}/payment-cancelled`,
         });
 
+        // console.log("NEDDED",stripe.checkout.sessions)
         // Respond with the session ID
         res.json({ id: session.id });
 

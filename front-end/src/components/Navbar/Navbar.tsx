@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IconButton, Stack, Typography, Box, Drawer, List, Divider, ListItem, ListItemButton, ListItemText, Badge, Button } from "@mui/material";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { rootColors } from "../../Utilities/rootColors";
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -8,16 +8,26 @@ import logo from '../../assets/logo.jfif';
 import AccountMenu from "../AccountMenu/AccountMenu";
 import { useCart } from "react-use-cart";
 import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const isLogin = useSelector((state: any) => state.login.token)
-
-    // Get cart data
+    const isLogin = useSelector((state: any) => state.login.token);
+    const navigate = useNavigate(); // Hook to programmatically navigate
     const { totalItems } = useCart(); // Use the totalItems from react-use-cart
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
+    };
+
+    const handleCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (totalItems === 0) {
+            event.preventDefault(); // Prevent navigation
+            toast.error("Your cart is empty."); // Show error toast
+        } else {
+            // Navigate to cart page if items are present
+            navigate('/cart');
+        }
     };
 
     const DrawerList = (
@@ -100,8 +110,7 @@ const Navbar = () => {
                         <Stack key={idx} direction="row" alignItems="center" spacing={1}>
                             {item.title === "Cart" ? (
                                 <IconButton
-                                    component={NavLink}
-                                    to={item.path}
+                                    onClick={handleCartClick} // Handle cart click
                                     sx={{
                                         '&:hover': {
                                             color: rootColors.primary, // Adjust hover icon color as needed
@@ -111,7 +120,7 @@ const Navbar = () => {
                                         }
                                     }}
                                 >
-                                    <Badge badgeContent={totalItems} color="primary">
+                                    <Badge badgeContent={totalItems > 0 ? totalItems : null} color="primary">
                                         <ShoppingCartIcon color="action" />
                                     </Badge>
                                 </IconButton>

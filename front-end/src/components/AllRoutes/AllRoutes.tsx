@@ -12,9 +12,9 @@ import ScrollToTopOnRouteChange from "../ScrollToTopOnRouteChange/ScrollToTopOnR
 import MyAccount from "../MyAccount/MyAccount";
 import { useSelector } from "react-redux";
 import Orders from "../../pages/Orders/Orders";
-import Payment from "../../pages/Payment/Payment";
 import PaymentCancel from "../PaymentCancel/PaymentCancel";
 import PaymentSuccess from "../PaymentSuccess/PaymentSuccess";
+import AddressMe from "../../pages/AddressMe/AddressMe";
 
 
 const AllRoutes = () => {
@@ -40,6 +40,9 @@ const AllRoutes = () => {
         } />
         <Route path="/signup" element={
           isLogin ? <Navigate to="/" /> : <SignUp />
+        } />
+        <Route path="/address-me" element={
+          <AddressMe /> 
         } />
         <Route path="/payment-cancelled" element={
           isLogin ? <PaymentCancel /> : <Navigate to="/" />
