@@ -22,12 +22,11 @@ import { useCart } from "react-use-cart";
 import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
 import { Link, useNavigate } from "react-router-dom";
-// import { loadStripe } from "@stripe/stripe-js";
 import { useSelector } from "react-redux";
 
-const CurrencyConverter = ({ amount :any, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
-    const [convertedAmount, setConvertedAmount] = React.useState(amount);
+const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [rate, setRate] = React.useState(60); // Default rate
+    const [convertedAmount, setConvertedAmount] = React.useState(amount);
 
     React.useEffect(() => {
         const fetchExchangeRate = async () => {
@@ -57,50 +56,6 @@ const Cart: React.FC = () => {
     const [itemToDelete, setItemToDelete] = React.useState<number | null>(null);
     const navigate = useNavigate();
     const userinfo = useSelector((state: any) => state.login.user);
-
-    const backendUrl = import.meta.env.VITE_BACKEND_URL; // Ensure this is correctly set in .env
-    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-
-    // const handlePayment = async () => {
-    //     try {
-    //         const stripe = await stripePromise;
-
-    //         const body = {
-    //             customer: userinfo,
-    //             products: items,
-    //             total: cartTotal,
-    //         };
-
-    //         const response = await fetch(`${backendUrl}/create-checkout-session`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(body),
-    //         });
-    //         console.log("mt body=>", response)
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-
-    //         const session = await response.json();
-    //         // Ensure that `sessionId` is returned and valid
-    //         if (session.id) {
-    //             const result = await stripe.redirectToCheckout({ sessionId: session.id });
-    //             if (result.error) {
-    //                 console.error('Error redirecting to Checkout:', result.error.message);
-    //                 toast.error('Failed to redirect to checkout.');
-    //             }
-    //         } else {
-    //             throw new Error('Invalid session ID received');
-    //         }
-
-    //     } catch (error) {
-    //         console.error('Error during payment:', error);
-    //         toast.error('Payment failed. Please try again.');
-    //     }
-    // };
-
 
     const handleDeleteClick = (id: number) => {
         setItemToDelete(id);
@@ -173,7 +128,9 @@ const Cart: React.FC = () => {
                                                     {item.title}
                                                 </Link>
                                             </TableCell>
-                                            <TableCell>₹ <CurrencyConverter amount={item.price * item.quantity} /></TableCell>
+                                            <TableCell>
+                                                ₹ <CurrencyConverter amount={item.price * item.quantity} />
+                                            </TableCell>
                                             <TableCell>
                                                 <IconButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)} aria-label="decrease quantity">
                                                     -
@@ -193,7 +150,7 @@ const Cart: React.FC = () => {
                                 </TableBody>
                             </Table>
                             <Typography variant="h6" sx={{ padding: "10px 20px", bgcolor: rootColors.grey }}>
-                                Total: ₹ {<CurrencyConverter amount={cartTotal} />}
+                                Total: ₹ <CurrencyConverter amount={cartTotal} />
                             </Typography>
                             <Dialog
                                 open={open}
@@ -234,7 +191,7 @@ const Cart: React.FC = () => {
                     }}
                 >
                     <Button variant="contained" onClick={() => window.location.href = "/"}>Continue Shopping</Button>
-                    <Button variant="contained" color="primary" onClick={handlePayment}>
+                    <Button variant="contained" color="primary">
                         Proceed to Checkout
                     </Button>
                 </Stack>
