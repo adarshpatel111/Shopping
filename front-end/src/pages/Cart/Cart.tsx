@@ -23,7 +23,7 @@ import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+//Stripe removed from here
 const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [rate, setRate] = React.useState(60); // Default rate
     const [convertedAmount, setConvertedAmount] = React.useState(amount);
