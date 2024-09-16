@@ -13,6 +13,8 @@ import { toast } from 'react-hot-toast';
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const isLogin = useSelector((state: any) => state.login.token);
+
+
     const navigate = useNavigate(); // Hook to programmatically navigate
     const { totalItems } = useCart(); // Use the totalItems from react-use-cart
 
@@ -30,8 +32,9 @@ const Navbar = () => {
         }
     };
 
+
     const DrawerList = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 250, display: 'flex', flexDirection: 'column', height: '100%' }} role="presentation" onClick={toggleDrawer(false)}>
             <List>
                 {navLinks.map((item, index) => (
                     <ListItem key={index} disablePadding>
@@ -42,11 +45,11 @@ const Navbar = () => {
                                 textDecoration: 'none',
                                 color: rootColors.text,
                                 '&.active': {
-                                    color: rootColors.primary, // Active link color
+                                    color: rootColors.primary,
                                     fontWeight: 'bold'
                                 },
                                 '&:hover': {
-                                    color: rootColors.primary, // Adjust hover text color as needed
+                                    color: rootColors.primary,
                                 }
                             }}
                         >
@@ -56,36 +59,14 @@ const Navbar = () => {
                 ))}
             </List>
             <Divider />
-            <List>
-                {['Login'].map((text, index) => (
-                    <ListItem key={index} disablePadding>
-                        <ListItemButton
-                            component={NavLink}
-                            to={'/login'}
-                            sx={{
-                                textDecoration: 'none',
-                                color: rootColors.text,
-                                '&.active': {
-                                    color: rootColors.primary, // Active link color
-                                    fontWeight: 'bold'
-                                },
-                                '&:hover': {
-                                    color: rootColors.primary, // Adjust hover text color as needed
-                                }
-                            }}
-                        >
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
         </Box>
     );
+
 
     return (
         <Stack component={"nav"}
             sx={{
-                flexDirection: { xs: "row-reverse", md: "row" },
+                flexDirection: { xs: "row", md: "row" },
                 justifyContent: "space-between",
                 alignItems: "center",
                 boxSizing: "border-box",
@@ -150,24 +131,33 @@ const Navbar = () => {
                     {isLogin ? (
                         <AccountMenu />
                     ) : (
-                        <Button component={Link} variant="outlined" to={'/login'}>
+                        <Button component={Link} variant="outlined" to={'/signin'}>
                             Login
                         </Button>
                     )}
                 </Stack>
             </Stack>
-            <Stack sx={{ display: { xs: 'flex', md: 'none' } }} onClick={toggleDrawer(true)}>
-                <IconButton
-                    sx={{
-                        '&:hover': {
-                            color: rootColors.primary, // Adjust hover icon color as needed
-                        }
-                    }}
-                >
-                    <MenuIcon />
-                </IconButton>
+           <Stack sx={{ flexDirection: 'row',display: { xs: 'flex', md: 'none' } }}>
+                <Stack sx={{ flexDirection: "row", gap: 3, alignItems: 'flex-end', display: { xs: 'flex', md: 'none' } }}>
+                    {isLogin ? (
+                        <AccountMenu />
+                    ) : (
+                        <Button onClick={() => navigate("/signin")}>Sign In</Button>
+                    )}
+                </Stack>
+                <Stack sx={{ display: { xs: 'flex', md: 'none !important' } }} onClick={toggleDrawer(true)}>
+                    <IconButton
+                        sx={{
+                            '&:hover': {
+                                color: rootColors.primary, // Adjust hover icon color as needed
+                            }
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Stack>
             </Stack>
-            <Drawer anchor="left" sx={{ display: { xs: 'flex', md: 'none' } }} open={open} onClose={toggleDrawer(false)}
+            <Drawer anchor="right" sx={{ display: { xs: 'flex', md: 'none' } }} open={open} onClose={toggleDrawer(false)}
                 PaperProps={{ sx: { bgcolor: rootColors.primary } }}>
                 {DrawerList}
             </Drawer>

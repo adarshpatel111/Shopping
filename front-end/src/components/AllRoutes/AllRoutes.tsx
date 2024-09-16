@@ -35,7 +35,7 @@ const AllRoutes = () => {
         <Route path="/orders" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
         <Route path="/orders/:id" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
 
-        <Route path="/login" element={
+        <Route path="/signin" element={
           isLogin ? <Navigate to="/" /> : <SignIn />
         } />
         <Route path="/signup" element={

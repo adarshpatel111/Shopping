@@ -10,7 +10,7 @@ const MyAccount = () => {
     return (
         <>
             {
-                localStorage.getItem('token') ?
+                localStorage.getItem('_token_') ?
                     <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                         <Stack sx={{ backgroundImage: `url(${BackgroundImg})`, backgroundSize: "cover", backgroundPosition: "center", width: "100%", height: "10rem" }}>
                         </Stack>

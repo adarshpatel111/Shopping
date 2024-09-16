@@ -4,48 +4,49 @@ import User from "../models/userModel.js";
 import env from 'dotenv';
 env.config();
 
+
 // Helper function to generate JWT token
 const generateToken = (user) => {
-    return jwt.sign(
-        { id: user._id, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' } // Token expiration time
-    );
+    // return jwt.sign(
+    //     { id: user._id, email: user.email },
+    //     process.env.ACCESS_TOKEN_SECRET,
+    //     { expiresIn: '10s' } // Token expiration time
+    // );
 };
 
 export const signUpUser = async (req, res) => {
-    try {
-        const { firstName, lastName, email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-        const hashPassword = await bcrypt.hash(password, 10);
-        const createdUser = new User({
-            firstName,
-            lastName,
-            email,
-            password: hashPassword,
-        });
-        await createdUser.save();
+    // try {
+    //     const { firstName, lastName, email, password } = req.body;
+    //     const user = await User.findOne({ email });
+    //     if (user) {
+    //         return res.status(400).json({ message: "User already exists" });
+    //     }
+    //     const hashPassword = await bcrypt.hash(password, 10);
+    //     const createdUser = new User({
+    //         firstName,
+    //         lastName,
+    //         email,
+    //         password: hashPassword,
+    //     });
+    //     await createdUser.save();
 
-        // Generate token after successful sign up
-        const token = generateToken(createdUser);
+    //     // Generate token after successful sign up
+    //     const token = generateToken(createdUser);
 
-        res.status(201).json({
-            message: "User created successfully",
-            user: {
-                _id: createdUser._id,
-                firstName: createdUser.firstName,
-                lastName: createdUser.lastName,
-                email: createdUser.email
-            },
-            token // Send token with response
-        });
-    } catch (error) {
-        console.log("Error from Usercontroller", error);
-        res.status(500).json(error);
-    }
+    //     res.status(201).json({
+    //         message: "User created successfully",
+    //         user: {
+    //             _id: createdUser._id,
+    //             firstName: createdUser.firstName,
+    //             lastName: createdUser.lastName,
+    //             email: createdUser.email
+    //         },
+    //         token // Send token with response
+    //     });
+    // } catch (error) {
+    //     console.log("Error from Usercontroller", error);
+    //     res.status(500).json(error);
+    // }
 };
 
 export const loginUser = async (req, res) => {
@@ -63,8 +64,25 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // Generate token after successful login
-        const token = generateToken(user);
+        // Adjust token expiration times as needed
+        const accessTOKEN = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '15s' } // Token expiration time
+        );
+        const refreshTOKEN = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: '1m' } // Token expiration time
+        );
+
+        // Set the refresh token as a cookie
+        res.cookie('jwt', refreshTOKEN, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'None', // Ensure cross-site requests are handled properly
+            maxAge: 1 * 60 * 1000, //It should in Numeric value only
+        });
 
         res.status(200).json({
             message: "Login successful",
@@ -74,10 +92,78 @@ export const loginUser = async (req, res) => {
                 lastName: user.lastName,
                 email: user.email
             },
-            token // Send token with response
+            token: {
+                access_token: accessTOKEN,
+            },
         });
+
     } catch (error) {
-        console.log("Error from UserLogincontroller", error);
-        res.status(500).json(error);
+        console.log("Error from UserLogin controller", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
+export const refresh = async (req, res) => {
+    try {
+        const cookies = req.cookies;
+
+        if (!cookies?.jwt) {
+            return res.status(401).json({ message: "Unauthorized: No token provided" });
+        }
+
+        const refreshToken = cookies.jwt;
+
+        // Verify the refresh token
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: "Forbidden: Invalid token" });
+            }
+
+            // Find the user by ID
+            const foundUser = await User.findById(decoded.id);
+            if (!foundUser) {
+                return res.status(401).json({ message: "Unauthorized: User not found" });
+            }
+
+            // Generate a new access token
+            const accessToken = jwt.sign(
+                {
+                    email: foundUser.email,
+                    id: foundUser._id
+                },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: "15s" } // Adjust the expiration time as needed
+            );
+
+            // Send the new access token
+            res.json({ accessToken });
+        });
+    } catch (error) {
+        console.error("Error during token refresh:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const logout = async (req, res) => {
+    const cookies = req.cookies;
+
+    console.log("Cookies received:", req.cookies);
+
+    // Check if 'jwt' cookie exists
+    if (!cookies?.jwt) {
+        return res.sendStatus(204); // No content
+    }
+    else {
+        console.log('Logout request received');
+
+
+        // Clear the cookie
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: false, // Change to true if using HTTPS
+            sameSite: 'None' // Change as needed
+        });
+
+        // Send response
+        res.json({ message: 'Cookie cleared' });
+    }
+}

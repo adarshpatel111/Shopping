@@ -6,6 +6,7 @@ import { getAllProductsRoute, getSingleProductsRoute } from './routes/productRou
 import userRoute from './routes/userRoute.js';
 import { getPaymentRoute } from './routes/paymentRoute.js';
 import { getWebhookRoute } from './routes/webhookRoute.js';
+import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import Stripe from 'stripe';
 import { getOrdersRoute, updateOrderStatusDetails } from './routes/ordersRoute.js';
@@ -16,7 +17,15 @@ env.config();
 const app = Express();
 
 app.use(Express.json());
-app.use(cors());
+app.use(cookieParser())
+
+const frontendUrl = process.env.FRONTEND_URL;
+// Configure CORS options
+const corsOptions = {
+    origin: `${frontendUrl}`, // Replace with your frontend URL
+    credentials: true, // Allow credentials (cookies) to be sent
+};
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 5001;
 const mongooseURI = process.env.MONGO_URI;

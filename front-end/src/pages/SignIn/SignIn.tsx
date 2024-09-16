@@ -59,18 +59,18 @@ export default function SignIn() {
         }
 
         try {
-            // console.log(`Sending POST request to: ${backendUrl}/user/login`);
-            // console.log(`Payload:`, { email, password, remember });
-
             const response = await axios.post(`${backendUrl}/user/login`, {
                 email,
                 password,
                 remember,
+            }, {
+                withCredentials: true // Ensure cookies are sent and received
             });
-            dispatch({ type: LOGINUSERTOKEN, payload: response.data.token })
+            dispatch({ type: LOGINDATA, payload: response.data.user })
+            dispatch({ type: LOGINUSERTOKEN, payload: response.data.token.access_token })
             // set localstorage token
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('_token_', response.data.token.access_token);
                 navigate('/');
 
             }

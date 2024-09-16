@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.6",
-    "@stripe/stripe-js": "^4.3.0",
     "axios": "^1.7.3",
     "framer-motion": "^11.3.21",
     "lottie-react": "^2.4.0",
@@ -25,8 +24,7 @@
     "react-router-dom": "^6.26.0",
     "react-use-cart": "^1.14.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0",
-    "stripe": "^16.10.0"
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
