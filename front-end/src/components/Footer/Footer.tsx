@@ -6,7 +6,7 @@
 // import TwitterIcon from '@mui/icons-material/X';
 import { Box, Button, Container, Link, IconButton, Stack, TextField, Typography } from '@mui/material';
 // import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.jfif';
+import logo from '../../assets/logo.jpg';
 
 
 const logoStyle = {

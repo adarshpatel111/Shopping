@@ -4,7 +4,7 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { rootColors } from "../../Utilities/rootColors";
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import logo from '../../assets/logo.jfif';
+import logo from '../../assets/logo.jpg';
 import AccountMenu from "../AccountMenu/AccountMenu";
 import { useCart } from "react-use-cart";
 import { useSelector } from 'react-redux';
