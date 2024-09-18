@@ -13,8 +13,12 @@ const Products = () => {
   const [sortOrder, setSortOrder] = useState(''); // for sorting products
   const [searchTerm, setSearchTerm] = useState(''); // for search input
   interface Product {
-    category: string;
+    id: number;
     title: string;
+    image: string;
+    price: number;
+    category: string;
+    
     // Add other properties as needed
   }
   useEffect(() => {

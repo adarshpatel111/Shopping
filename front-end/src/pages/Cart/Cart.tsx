@@ -21,9 +21,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "react-use-cart";
 import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 //Stripe removed from here
-const CurrencyConverter = ({amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
+const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [rate, setRate] = useState(60); // Default rate
     const [convertedAmount, setConvertedAmount] = useState(amount);
 
@@ -52,14 +52,14 @@ const CurrencyConverter = ({amount, baseCurrency = 'USD', targetCurrency = 'INR'
 const Cart: React.FC = () => {
     const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
     const [open, setOpen] = useState(false);
-    const [itemToDelete, setItemToDelete] = useState<number | null>(null);
+    const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
-    const handleDeleteClick = (id: number) => {
+    const handleDeleteClick = (id: string) => {
         setItemToDelete(id);
         setOpen(true);
     };
 
-    const handleQuantityChange = (id: number, quantity: number) => {
+    const handleQuantityChange = (id: string, quantity: number) => {
         if (quantity <= 0) {
             toast.success("Item deleted due to zero quantity", {
                 icon: '✔',
@@ -69,15 +69,15 @@ const Cart: React.FC = () => {
                     color: '#fff',
                 },
             });
-            removeItem(id);
+            removeItem(id.toString());
         } else {
-            updateItemQuantity(id, quantity);
+            updateItemQuantity(id.toString(), quantity);
         }
     };
 
     const handleDeleteConfirm = () => {
         if (itemToDelete !== null) {
-            removeItem(itemToDelete);
+            removeItem(itemToDelete.toString());
             toast.success("Item deleted successfully", {
                 icon: '✔',
                 style: {
