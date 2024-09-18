@@ -21,11 +21,11 @@ app.use(cookieParser())
 
 const frontendUrl = process.env.FRONTEND_URL;
 // Configure CORS options
-const corsOptions = {
-    origin: `${frontendUrl}`, // Replace with your frontend URL
-    credentials: true, // Allow credentials (cookies) to be sent
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//     origin: `${frontendUrl}`, 
+//     credentials: true, 
+// };
+app.use(cors);
 
 const PORT = process.env.PORT || 5001;
 const mongooseURI = process.env.MONGO_URI;
