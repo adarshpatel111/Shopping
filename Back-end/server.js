@@ -21,13 +21,13 @@ app.use(cookieParser())
 
 const frontendUrl = process.env.FRONTEND_URL;
 // Configure CORS options
-// const corsOptions = {
-//     origin: `${frontendUrl}`, 
-//     credentials: true, 
-// };
-app.use(cors);
+const corsOptions = {
+    origin: `${frontendUrl}`, 
+    credentials: true, 
+};
+app.use(cors(corsOptions));
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5001;
 const mongooseURI = process.env.MONGO_URI;
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_ENDPOINT_SECRET
