@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Table,
@@ -34,7 +34,6 @@ const statusOptions = [
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [editStatusOrderId, setEditStatusOrderId] = useState(null);
   const [newStatus, setNewStatus] = useState('');
   const [openDialog, setOpenDialog] = useState(false);

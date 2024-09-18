@@ -51,11 +51,9 @@ const CurrencyConverter = ({amount, baseCurrency = 'USD', targetCurrency = 'INR'
 
 // Proceed to Pay
 const Cart: React.FC = () => {
-    const { items, removeItem, updateItemQuantity, emptyCart, cartTotal } = useCart();
+    const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
     const [open, setOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<number | null>(null);
-    const navigate = useNavigate();
-    const userinfo = useSelector((state: any) => state.login.user);
 
     const handleDeleteClick = (id: number) => {
         setItemToDelete(id);
