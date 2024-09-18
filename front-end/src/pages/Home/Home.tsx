@@ -13,9 +13,6 @@ const Home = () => {
 
   useEffect(() => {
     // Use axios to fetch data from the backend URL specified in the environment variable
-    setTimeout(() => {
-      setLoading(true);
-    }, 50000);
     axios.get(`${backendUrl}/products`)
       .then((response) => {
         // Check if the data is an array
