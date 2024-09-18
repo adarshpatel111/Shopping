@@ -1,5 +1,4 @@
 // PaymentSuccess.jsx
-import React from 'react';
 import { Container, Typography, Button, Paper, Stack } from '@mui/material';
 
 const PaymentSuccess = () => {

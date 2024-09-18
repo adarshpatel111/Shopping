@@ -21,8 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "react-use-cart";
 import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link} from "react-router-dom";
 //Stripe removed from here
 const CurrencyConverter = ({amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [rate, setRate] = useState(60); // Default rate
