@@ -1,8 +1,7 @@
-import { Grid, Stack, Divider } from "@mui/material";
+import { Grid, Stack, Divider, Skeleton } from "@mui/material";
 import Herosection from "../../components/HeroSection/Herosection";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
-import Loader from "../../components/Loader/Loader";
 import Testimonials from "../../components/Testimonials/Testimonials";
 import Highlights from "../../components/Highlights/Highlights";
 import axios from "axios";
@@ -14,6 +13,9 @@ const Home = () => {
 
   useEffect(() => {
     // Use axios to fetch data from the backend URL specified in the environment variable
+    setTimeout(() => {
+      setLoading(true);
+    }, 50000);
     axios.get(`${backendUrl}/products`)
       .then((response) => {
         // Check if the data is an array
@@ -31,19 +33,54 @@ const Home = () => {
     <Stack sx={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
       <Stack sx={{ width: "90%", mt: 5, gap: 8 }}>
         <Herosection />
-        {loading ? (
-          <Stack sx={{ justifyContent: "center", alignItems: "center", height: "100vh" }}>
-            <Loader />
-          </Stack>
-        ) : (
-          <Grid container spacing={5}>
-            {productData.map((Item, index) => (
-              <Grid item xs={12} md={3} key={index}>
-                <ProductCard productData={Item} />
+        {
+          loading ? (
+            <Stack
+              sx={{
+                height: "80vh",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "250px",
+                marginBottom: "250px",
+              }}
+            >
+              <Grid container spacing={0}>
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    xs={6}
+                    sm={4}
+                    md={4}
+                    lg={3}
+                    sx={{ placeItems: "center" }}
+                  >
+                    <Skeleton
+                      sx={{
+                        width: { xs: "150px", md: "200px", lg: "280px" },
+                        height: { xs: "150px", md: "200px", lg: "500px" },
+                      }}
+                    />
+                    <Skeleton
+                      sx={{
+                        width: { xs: "150px", md: "200px", lg: "280px" },
+                        height: { xs: "30px", md: "50px", lg: "100px" },
+                        marginTop: "-100px",
+                      }}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        )}
+            </Stack>
+          ) : (
+            <Grid container spacing={5}>
+              {productData.map((Item, index) => (
+                <Grid item xs={12} md={3} key={index}>
+                  <ProductCard productData={Item} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
         <Divider />
         <Testimonials />
         <Divider />

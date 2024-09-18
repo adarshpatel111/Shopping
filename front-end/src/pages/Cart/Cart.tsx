@@ -21,12 +21,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "react-use-cart";
 import { toast } from "react-hot-toast";
 import { rootColors } from "../../Utilities/rootColors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //Stripe removed from here
 const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
     const [rate, setRate] = useState(60); // Default rate
     const [convertedAmount, setConvertedAmount] = useState(amount);
-
     useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
@@ -37,14 +36,14 @@ const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR
                 console.error('Error fetching exchange rate:', error);
             }
         };
-
+        
         fetchExchangeRate();
     }, [baseCurrency, targetCurrency]);
-
+    
     useEffect(() => {
         setConvertedAmount(amount * rate);
     }, [amount, rate]);
-
+    
     return convertedAmount.toFixed(2);
 };
 
@@ -53,7 +52,8 @@ const Cart: React.FC = () => {
     const { items, removeItem, updateItemQuantity, cartTotal } = useCart();
     const [open, setOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<string | null>(null);
-
+    
+    const navigate=useNavigate();
     const handleDeleteClick = (id: string) => {
         setItemToDelete(id);
         setOpen(true);
@@ -187,7 +187,7 @@ const Cart: React.FC = () => {
                         gap: { xs: "10px", md: 0 },
                     }}
                 >
-                    <Button variant="contained" onClick={() => window.location.href = "/"}>Continue Shopping</Button>
+                    <Button variant="contained" onClick={() => navigate("/")}>Continue Shopping</Button>
                     <Button variant="contained" color="primary">
                         Proceed to Checkout
                     </Button>
