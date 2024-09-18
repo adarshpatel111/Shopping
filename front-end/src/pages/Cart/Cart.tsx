@@ -69,15 +69,15 @@ const Cart: React.FC = () => {
                     color: '#fff',
                 },
             });
-            removeItem(id.toString());
+            removeItem(id);
         } else {
-            updateItemQuantity(id.toString(), quantity);
+            updateItemQuantity(id, quantity);
         }
     };
 
     const handleDeleteConfirm = () => {
         if (itemToDelete !== null) {
-            removeItem(itemToDelete.toString());
+            removeItem(itemToDelete);
             toast.success("Item deleted successfully", {
                 icon: '✔',
                 style: {

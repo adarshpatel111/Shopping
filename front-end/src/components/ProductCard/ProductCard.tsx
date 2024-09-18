@@ -31,7 +31,7 @@ export default function ProductCard({ productData }: any) {
         } else {
             // Otherwise, add the new item
             addItem({
-                id: productData.id,
+                id: productData._id,
                 title: productData.title,
                 price: productData.price,
                 image: productData.image,
