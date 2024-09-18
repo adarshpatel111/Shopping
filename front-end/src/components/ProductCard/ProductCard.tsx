@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCart } from 'react-use-cart';
 import toast from 'react-hot-toast'; // Import the toast function
 import Card from '@mui/material/Card';

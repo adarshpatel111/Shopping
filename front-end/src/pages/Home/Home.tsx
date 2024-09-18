@@ -1,4 +1,4 @@
-import { Grid, Stack, CircularProgress, Typography, Divider } from "@mui/material";
+import { Grid, Stack, Divider } from "@mui/material";
 import Herosection from "../../components/HeroSection/Herosection";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
@@ -6,13 +6,11 @@ import Loader from "../../components/Loader/Loader";
 import Testimonials from "../../components/Testimonials/Testimonials";
 import Highlights from "../../components/Highlights/Highlights";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Home = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
-  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     // Use axios to fetch data from the backend URL specified in the environment variable
@@ -20,8 +18,7 @@ const Home = () => {
       .then((response) => {
         // Check if the data is an array
         // console.log('Data type of response.data:', Array.isArray(response.data)); // This should be true
-        setProductData(response.data);
-        setFilteredData(response.data); // Initialize filteredData with the response
+        setProductData(response.data); // Initialize filteredData with the response
         setLoading(false); // Set loading to false when data is fetched
       })
       .catch((error) => {

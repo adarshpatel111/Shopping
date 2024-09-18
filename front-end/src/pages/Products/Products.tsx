@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography, Button, MenuItem, Select, InputLabel, FormControl, TextField } from "@mui/material";
+import { Grid, Stack, Typography, MenuItem, Select, InputLabel, FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import Loader from "../../components/Loader/Loader";
@@ -6,13 +6,17 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Products = () => {
-  const [productData, setProductData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+  const [productData, setProductData] = useState<Product[]>([]);
+  const [filteredData, setFilteredData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('');
   const [sortOrder, setSortOrder] = useState(''); // for sorting products
   const [searchTerm, setSearchTerm] = useState(''); // for search input
-
+  interface Product {
+    category: string;
+    title: string;
+    // Add other properties as needed
+  }
   useEffect(() => {
     // Use axios to fetch data from the local API
     axios.get(`${backendUrl}/products`)

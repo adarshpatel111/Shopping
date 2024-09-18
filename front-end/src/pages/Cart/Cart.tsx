@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -24,11 +24,11 @@ import { rootColors } from "../../Utilities/rootColors";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 //Stripe removed from here
-const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
-    const [rate, setRate] = React.useState(60); // Default rate
-    const [convertedAmount, setConvertedAmount] = React.useState(amount);
+const CurrencyConverter = ({amount, baseCurrency = 'USD', targetCurrency = 'INR' }) => {
+    const [rate, setRate] = useState(60); // Default rate
+    const [convertedAmount, setConvertedAmount] = useState(amount);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
                 const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${baseCurrency}`);
@@ -42,7 +42,7 @@ const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR
         fetchExchangeRate();
     }, [baseCurrency, targetCurrency]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setConvertedAmount(amount * rate);
     }, [amount, rate]);
 
@@ -52,8 +52,8 @@ const CurrencyConverter = ({ amount, baseCurrency = 'USD', targetCurrency = 'INR
 // Proceed to Pay
 const Cart: React.FC = () => {
     const { items, removeItem, updateItemQuantity, emptyCart, cartTotal } = useCart();
-    const [open, setOpen] = React.useState(false);
-    const [itemToDelete, setItemToDelete] = React.useState<number | null>(null);
+    const [open, setOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<number | null>(null);
     const navigate = useNavigate();
     const userinfo = useSelector((state: any) => state.login.user);
 

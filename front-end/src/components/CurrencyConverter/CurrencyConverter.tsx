@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Stack, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Typography, Stack } from '@mui/material';
 
 // CurrencyConverter component
 const CurrencyConverter = ({ price, baseCurrency = 'USD' }) => {
     const [convertedPrice, setConvertedPrice] = useState(price);
-    const [currency, setCurrency] = useState('INR');
     const [rate, setRate] = useState(60); // Default rate
 
     useEffect(() => {
