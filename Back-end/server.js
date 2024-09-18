@@ -27,7 +27,7 @@ const frontendUrl = process.env.FRONTEND_URL;
 // };
 app.use(cors);
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 const mongooseURI = process.env.MONGO_URI;
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_ENDPOINT_SECRET
