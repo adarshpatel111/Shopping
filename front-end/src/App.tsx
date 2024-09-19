@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('_token_');
     if (token) {
-      console.log("this is the token", token)
       dispatch({ type: LOGINUSERTOKEN, payload: token })
     }
     else {

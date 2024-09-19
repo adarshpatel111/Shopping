@@ -59,8 +59,6 @@ export default function AccountMenu() {
                 }
             });
 
-            console.log("Response for Cookie", response.status + " " + response.statusText);
-
             if (response.status === 204) {
                 // Logout successful
                 handleClose();
@@ -70,11 +68,9 @@ export default function AccountMenu() {
                 dispatch({ type: LOGINUSERDATA, payload: null }); // Clear user data from Redux store
                 navigate('/'); // Redirect to login page
                 toast.success("Logout successful");
-                console.log("Logout successful");
             } else {
                 // Handle unexpected success status codes
                 toast.error("Unexpected response during logout");
-                console.log("Unexpected response status=>", response.status, response.statusText);
             }
         } catch (error) {
             console.error("Error during logout:", error);

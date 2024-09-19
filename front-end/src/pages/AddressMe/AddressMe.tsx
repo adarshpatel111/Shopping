@@ -100,9 +100,7 @@ const AddressMe = () => {
             toast.error('Please fix the errors before submitting.');
             return;
         }
-
         toast.success('Form submitted successfully!');
-        console.log('Form submitted:', address);
     };
 
     return (

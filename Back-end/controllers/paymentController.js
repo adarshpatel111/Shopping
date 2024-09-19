@@ -49,7 +49,6 @@ export const getPaymentDetails = async (req, res) => {
             cancel_url: `${process.env.FRONTEND_URL}/payment-cancelled`,
         });
 
-        // console.log("NEDDED",stripe.checkout.sessions)
         // Respond with the session ID
         res.json({ id: session.id });
 

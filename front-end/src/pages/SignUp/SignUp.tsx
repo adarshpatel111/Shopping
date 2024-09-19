@@ -52,16 +52,12 @@ export default function SignUp() {
         }
 
         try {
-            // console.log(`Sending POST request to: ${backendUrl}/user/signup`);
-            // console.log(`Payload:`, { firstName, lastName, email, password });
-
-           await axios.post(`${backendUrl}/user/signup`, {
+            await axios.post(`${backendUrl}/user/signup`, {
                 firstName,
                 lastName,
                 email,
                 password,
             });
-            // console.log('response:', response);
             toast.success('Signup successful! You can now sign in.'); // Show success toast
 
             // Clear form fields after successful signup

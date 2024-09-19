@@ -16,7 +16,6 @@ const Home = () => {
     axios.get(`${backendUrl}/products`)
       .then((response) => {
         // Check if the data is an array
-        // console.log('Data type of response.data:', Array.isArray(response.data)); // This should be true
         setProductData(response.data); // Initialize filteredData with the response
         setLoading(false); // Set loading to false when data is fetched
       })

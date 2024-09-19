@@ -36,7 +36,6 @@ export const updateOrderStatus = async (req, res) => {
         res.status(200).json(updatedOrder);
     } catch (error) {
         // Log the error and respond with a server error status
-        console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 };

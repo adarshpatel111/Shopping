@@ -65,7 +65,6 @@ app.post('/webhook', bodyParser.raw({ type: 'application/json' }), (req, res) =>
             endpointSecret
         )
     } catch (err) {
-        console.log(`Webhook Error from stripe=> ${err.message}`);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 

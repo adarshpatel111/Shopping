@@ -8,12 +8,10 @@ const initState = {
 export default (state = initState, action: any) => {
     switch (action.type) {
         case LOGINDATA:
-            console.log("payload", action.payload)
             return { ...state, login: action.payload }
         case LOGINUSERDATA:
             return { ...state, user: action.payload }
         case LOGINUSERTOKEN:
-            console.log("User tOKEN payload", action.payload)
             return { ...state, token: action.payload }
         default:
             return state

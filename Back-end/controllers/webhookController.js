@@ -23,17 +23,14 @@ export const webhookController = async (req, res) => {
     switch (event.type) {
         case 'payment_intent.succeeded':
             const paymentIntent = event.data.object;
-            console.log('PaymentIntent was successful!');
             // Handle the successful payment intent
             break;
         case 'payment_method.attached':
             const paymentMethod = event.data.object;
-            console.log('PaymentMethod was attached to a Customer!');
             // Handle the payment method attachment
             break;
         // Add cases for other event types as needed
         default:
-            console.log(`Unhandled event type ${event.type}`);
     }
 
     // Return a response to acknowledge receipt of the event

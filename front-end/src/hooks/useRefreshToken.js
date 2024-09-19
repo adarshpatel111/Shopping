@@ -9,7 +9,6 @@ const useRefreshToken = () => {
         const response = await axios.get(`${backendUrl}/user/refresh`, {
             withCredentials: true
         })
-        console.log("my R token", response.data.accessToken);
         dispatch({ type: LOGINUSERTOKEN, payload: response.data.accessToken })
         return response.data.accessToken
     }
