@@ -15,6 +15,7 @@ import Orders from "../../pages/Orders/Orders";
 import PaymentCancel from "../PaymentCancel/PaymentCancel";
 import PaymentSuccess from "../PaymentSuccess/PaymentSuccess";
 import AddressMe from "../../pages/AddressMe/AddressMe";
+import ChangePassword from "../../pages/ChangePassword/ChangePassword";
 
 
 const AllRoutes = () => {
@@ -40,6 +41,9 @@ const AllRoutes = () => {
         } />
         <Route path="/signup" element={
           isLogin ? <Navigate to="/" /> : <SignUp />
+        } />
+        <Route path="/change-password" element={
+          <ChangePassword />
         } />
         <Route path="/address-me" element={
           <AddressMe /> 

@@ -46,6 +46,10 @@ export default function AccountMenu() {
         navigate('/orders')
         handleClose();
     }
+    const handleSettings = () => {
+        navigate('/change-password')
+        handleClose();
+    }
     const handleLogout = async () => {
         try {
             const response = await axios.post(`${backendUrl}/user/logout`, {
@@ -167,7 +171,7 @@ export default function AccountMenu() {
                         </MenuItem>
                         : null
                 }
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleSettings}>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
