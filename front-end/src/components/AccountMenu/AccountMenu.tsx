@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGINUSERDATA, LOGINUSERTOKEN } from '../../Utilities/ReduxConstants/SigninConstans';
 import { useEffect } from 'react';
-
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -44,6 +44,10 @@ export default function AccountMenu() {
     }
     const handleOrders = () => {
         navigate('/orders')
+        handleClose();
+    }
+    const handleProductInventory = () => {
+        navigate('/product-inventory')
         handleClose();
     }
     const handleSettings = () => {
@@ -164,6 +168,16 @@ export default function AccountMenu() {
                                 <AssignmentIcon fontSize="small" />
                             </ListItemIcon>
                             Orders
+                        </MenuItem>
+                        : null
+                }
+                {
+                    user.email === "superadmin9090@gmail.com" ?
+                        <MenuItem onClick={handleProductInventory}>
+                            <ListItemIcon>
+                                <InventoryIcon fontSize="small" />
+                            </ListItemIcon>
+                           Inventory
                         </MenuItem>
                         : null
                 }

@@ -1,11 +1,14 @@
-import express from 'express';
-import { getAllProducts, getSingleProduct } from '../controllers/productController.js';
+import express from "express";
+import {
+  getAllProducts,
+  getSingleProduct,
+  addProducts,
+  updateProducts,
+} from "../controllers/productController.js";
 
-
-// Create route handlers
-export const getAllProductsRoute = express.Router();
-getAllProductsRoute.get('/products', getAllProducts);
-
-export const getSingleProductsRoute = express.Router();
-getSingleProductsRoute.get('/products/:id', getSingleProduct);
-
+const productsRoute = express.Router();
+productsRoute.get("/", getAllProducts);
+productsRoute.get("/:id", getSingleProduct);
+productsRoute.post("/addproducts", addProducts);
+productsRoute.put("/update/:id", updateProducts);
+export default productsRoute;

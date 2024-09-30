@@ -10,7 +10,7 @@ import {
   Stack,
   Rating,
   Button,
-  Skeleton
+  Skeleton,
 } from "@mui/material";
 import { rootColors } from "../../Utilities/rootColors";
 import { useCart } from "react-use-cart";
@@ -28,8 +28,8 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await axios.get(`${backendUrl}/products/${id}`);
         setProduct(response.data);
       } catch (error) {
@@ -40,39 +40,38 @@ const ProductDetails = () => {
     };
 
     fetchData();
-  }, [id]); // Dependency on `id` to refetch data when `id` changes
+  }, [id]);
 
   const handleAddToCart = () => {
     if (!product) return;
 
-    const existingItem = getItem(product.id); // Use `product.id` directly
+    const existingItem = getItem(product.id);
+    const newQuantity = existingItem ? existingItem.quantity + 1 : 1;
 
     if (existingItem) {
-      // If item already exists, update its quantity
-      updateItemQuantity(product.id, existingItem.quantity + 1);
+      updateItemQuantity(product.id, newQuantity);
       toast.success(`Updated quantity of ${product.title} in cart`, {
-        icon: '👏',
+        icon: "👏",
         style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
         },
       });
     } else {
-      // Otherwise, add the new item
       addItem({
-        id: product._id, // Use `product.id` directly
+        id: product._id,
         title: product.title,
         price: product.price,
         image: product.image,
-        quantity: 1
+        quantity: newQuantity,
       });
       toast.success(`${product.title} added to cart`, {
-        icon: '👏',
+        icon: "👏",
         style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
         },
       });
     }
@@ -91,25 +90,45 @@ const ProductDetails = () => {
             alignItems: "center",
             flexDirection: "row",
             gap: 4,
-            height: "70vh"
+            height: "70vh",
           }}
         >
           <Skeleton
             sx={{
               padding: { xs: 2, sm: 4 },
               width: { xs: "500px", md: "200px" },
-              height: { xs: "350px", md: "600px" }
+              height: { xs: "350px", md: "600px" },
             }}
           />
           <Stack>
-            <Skeleton variant="text" sx={{ padding: { xs: 1, sm: 2 }, width: { xs: "400px", md: "400px" }, height: { xs: "100px", md: "30px" } }} />
-            <Skeleton variant="text" sx={{ width: { xs: "100px", md: "100px" }, height: { xs: "30px", md: "50px" } }} />
-            <Skeleton variant="text" sx={{ width: { xs: "100px", md: "100px" }, height: { xs: "50px", md: "50px" } }} />
-            <Skeleton sx={{ width: { xs: "130px", md: "150px" }, height: { xs: "50px", md: "50px" } }} />
-            <Skeleton sx={{ padding: { xs: 2, sm: 4 }, width: { xs: "500px", md: "500px" }, height: { xs: "100px", md: "100px" } }} />
+            <Skeleton
+              variant="text"
+              sx={{
+                padding: { xs: 1, sm: 2 },
+                width: "400px",
+                height: "100px",
+              }}
+            />
+            <Skeleton
+              variant="text"
+              sx={{ width: "100px", height: { xs: "30px", md: "50px" } }}
+            />
+            <Skeleton variant="text" sx={{ width: "100px", height: "50px" }} />
+            <Skeleton
+              sx={{ width: { xs: "130px", md: "150px" }, height: "50px" }}
+            />
+            <Skeleton
+              sx={{
+                padding: { xs: 2, sm: 4 },
+                width: "500px",
+                height: "100px",
+              }}
+            />
             <Stack sx={{ gap: 2, flexDirection: { xs: "column", md: "row" } }}>
-              <Skeleton sx={{ fontSize: '1rem', width: { xs: "100px", md: "100px" }, height: { xs: "50px", md: "50px" } }} />
-              <Skeleton sx={{ width: { xs: "100px", md: "100px" }, height: { xs: "50px", md: "50px" } }} />
+              <Skeleton
+                sx={{ fontSize: "1rem", width: "100px", height: "50px" }}
+              />
+              <Skeleton sx={{ width: "100px", height: "50px" }} />
             </Stack>
           </Stack>
         </Stack>
@@ -123,20 +142,28 @@ const ProductDetails = () => {
             alignItems: "center",
             bgcolor: rootColors.grey,
             flexDirection: { xs: "column", md: "row" },
-            gap: 2
+            gap: 2,
           }}
         >
           <CardMedia
             component="img"
             alt={product.title}
             image={product.image}
-            sx={{ padding: { xs: 2, sm: 4 }, width: { xs: "80%", md: "50%" }, height: { xs: "350px", md: "350px" } }}
+            sx={{
+              padding: { xs: 2, sm: 4 },
+              width: { xs: "80%", md: "50%" },
+              height: { xs: "350px", md: "350px" },
+            }}
           />
           <CardContent>
             <Typography variant="h4" component="div">
               {product.title}
             </Typography>
-            <Typography variant="h6" color="text.secondary" sx={{ marginTop: 1 }}>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{ marginTop: 1 }}
+            >
               {product.category}
             </Typography>
             <Typography variant="h5" color="primary" sx={{ marginTop: 2 }}>
@@ -160,7 +187,12 @@ const ProductDetails = () => {
               <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
                 Buy Now
               </Button>
-              <Button variant="contained" color="primary" sx={{ marginTop: 2 }} onClick={handleAddToCart}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleAddToCart}
+              >
                 Add to Cart
               </Button>
             </Stack>

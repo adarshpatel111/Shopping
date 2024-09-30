@@ -16,6 +16,7 @@ import PaymentCancel from "../PaymentCancel/PaymentCancel";
 import PaymentSuccess from "../PaymentSuccess/PaymentSuccess";
 import AddressMe from "../../pages/AddressMe/AddressMe";
 import ChangePassword from "../../pages/ChangePassword/ChangePassword";
+import ProductInventory from "../../pages/ProductInventory/ProductInventory";
 
 
 const AllRoutes = () => {
@@ -35,7 +36,7 @@ const AllRoutes = () => {
         <Route path="/myaccount" element={isLogin ? <MyAccount /> : <Navigate to="/" />} />
         <Route path="/orders" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
         <Route path="/orders/:id" element={isLogin && user.email === "superadmin9090@gmail.com" ? <Orders /> : <Navigate to="/orders" />} />
-
+        <Route path="/product-inventory" element={isLogin && user.email === "superadmin9090@gmail.com" ? <ProductInventory/> : <Navigate to="/product-inventory" />} />
         <Route path="/signin" element={
           isLogin ? <Navigate to="/" /> : <SignIn />
         } />

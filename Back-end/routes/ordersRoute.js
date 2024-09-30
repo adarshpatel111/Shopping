@@ -3,11 +3,8 @@ import { getAllOrders, updateOrderStatus } from '../controllers/ordersController
 
 
 // Create route for get orders handler
-export const getOrdersRoute = express.Router();
-getOrdersRoute.get('/orders', getAllOrders);
-
-// Create route for update order status handler
-export const updateOrderStatusDetails = express.Router();
-updateOrderStatusDetails.put('/orders/:id/status', updateOrderStatus);
-
+const ordersRoute = express.Router();
+ordersRoute.get('/', getAllOrders);
+ordersRoute.put('/:id/status', updateOrderStatus);
+export default ordersRoute;
 
